@@ -75,11 +75,23 @@ python scripts/test.py --headless --num_envs 2 --num_steps 200
 ### Higher prioprities
 - [ ] Integration with runners
 - [ ] Franka push state variant (`Robolab-Isaac-FrankaPush-State-v0`)
+- [ ] Real robot backend (`RealRobotSession` - franka)
+- [ ] RecordingWrapper
 
-### Lower prioprities
+### Mid prioprities
 - [ ] Add teleop devices (keyboard and space mouse)
+- [ ] Achieve a better package management
 - [ ] Data collection script (teleop -> `.pt` demos)
 - [ ] Franka pick task (image + state)
 - [ ] `get_env()` factory in `robolab_envs`
 - [ ] MuJoCo backend (`MujocoSession`)
 - [ ] Add external benchmarks ([furniture-bench](https://clvrai.github.io/furniture-bench/), [metaworld](https://metaworld.farama.org/))
+- [ ] Domain randomization
+
+### Lower prioprities
+- [ ] Versioning (OS & packages etc)
+- [ ] Update docs/guides on
+    - [ ] README.md
+    - [ ] installing isaaclab
+    - [ ] integrating benchmarks
+    - [ ] adding a custom robot
