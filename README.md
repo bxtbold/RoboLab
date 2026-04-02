@@ -25,7 +25,7 @@ source/
 │       └── real/
 ├── robolab_backend/
 │   └── robolab_backend/
-│       ├── isaac/
+│       ├── isaac/          # parse_args, IsaacSession, AppLauncher
 │       ├── mujoco/
 │       └── real/
 ```
@@ -41,11 +41,17 @@ pip install -e source/robolab_backend
 
 ## Usage
 
+### Basic env setup
+
 ```python
+import gymnasium as gym
+import argparse
 from robolab_backend.isaac import parse_args, IsaacSession
 
-parser.add_argument("--task", default="Robolab-Isaac-FrankaPush-Image-v0")
-args = parse_args()   # must be before any isaaclab imports
+parser = argparse.ArgumentParser()
+parser.add_argument("--task", default="Isaac-FrankaPush-Image-v0")
+parser.add_argument("--num-envs", type=int, default=1)
+args = parse_args(parser)   # must be before any isaaclab imports
 
 with IsaacSession(args) as session:
     import robolab_envs.isaac.manipulation.franka_push  # registers the gym task
@@ -59,39 +65,28 @@ with IsaacSession(args) as session:
 
 | ID | Obs | Action | Reward |
 |---|---|---|---|
-| `Robolab-Isaac-FrankaPush-Image-v0` | proprioception (6D) + table_cam + wrist_cam (64×64) | 3-DoF IK | sparse +1 |
-
-## Run
-
-```bash
-# quick test — steps env and saves table_cam video
-python scripts/test.py --headless --num_envs 2 --num_steps 200
-```
+| `Isaac-FrankaPush-Image-v0` | proprioception (6) + table_cam + wrist_cam (64×64x3) | 3-DoF IK delta | sparse +1 on success |
 
 ---
 
 ## TODO
 
-### Higher prioprities
+### High priority
 - [ ] Integration with runners
-- [ ] Franka push state variant (`Robolab-Isaac-FrankaPush-State-v0`)
+- [ ] Franka push state variant (`Isaac-FrankaPush-State-v0`)
 - [ ] Real robot backend (`RealRobotSession` - franka)
 - [ ] RecordingWrapper
 
-### Mid prioprities
-- [ ] Add teleop devices (keyboard and space mouse)
-- [ ] Achieve a better package management
-- [ ] Data collection script (teleop -> `.pt` demos)
+### Mid priority
+- [ ] Teleop devices (keyboard, SpaceMouse)
+- [ ] Data collection script (teleop → `.pt` demos)
 - [ ] Franka pick task (image + state)
-- [ ] `get_env()` factory in `robolab_envs`
 - [ ] MuJoCo backend (`MujocoSession`)
-- [ ] Add external benchmarks ([furniture-bench](https://clvrai.github.io/furniture-bench/), [metaworld](https://metaworld.farama.org/))
+- [ ] `get_env()` factory in `robolab_envs`
+- [ ] External benchmarks ([furniture-bench](https://clvrai.github.io/furniture-bench/), [metaworld](https://metaworld.farama.org/))
 - [ ] Domain randomization
 
-### Lower prioprities
-- [ ] Versioning (OS & packages etc)
-- [ ] Update docs/guides on
-    - [ ] README.md
-    - [ ] installing isaaclab
-    - [ ] integrating benchmarks
-    - [ ] adding a custom robot
+### Low priority
+- [ ] `pyproject.toml`-based installs (replace legacy `setup.py`)
+- [ ] Versioning (OS & package pins)
+- [ ] Guides: installing IsaacLab, integrating benchmarks, adding a custom robot
