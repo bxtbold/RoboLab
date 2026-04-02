@@ -1,7 +1,7 @@
 """Image-based Franka push environment.
 
-Gym id: ``Robolab-Isaac-FrankaPush-Image-v0``
-Obs:    proprioception (6-D), table_cam (64×64×3), wrist_cam (64×64×3)
+Gym id: ``Isaac-FrankaPush-Image-v0``
+Obs:    proprioception (6-D), table_cam (64x64x3), wrist_cam (64x64x3)
 Action: 3-DoF IK (XYZ delta, no gripper)
 Reward: sparse +1 when cube crosses y = -0.1 in robot frame
 """
@@ -87,10 +87,15 @@ class ImageObservationsCfg:
 
 @configclass
 class PushImageRewardsCfg:
+    push_dense = RewTerm(
+        func=mdp.push_reward,
+        weight=1.0,
+        params={"y_threshold": -0.08},
+    )
     push_sparse = RewTerm(
         func=mdp.push_sparse_reward,
         weight=1.0,
-        params={"y_threshold": -0.1, "reward_amount": 1.0},
+        params={"y_threshold": -0.08, "reward_amount": 1.0},
     )
 
 
